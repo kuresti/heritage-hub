@@ -1,1 +1,18 @@
-<p>document-details works!</p>
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <div class="pull-left"
+             *ngIf="document">
+             <h3 class="panel-title" style="margin-top: 0;">{{ document.type }} {{ document.description }}</h3>
+        </div>
+        <div class="pull-right" style="margin-top: 10px;">
+            <a class="btn btn-primary btn-sm" style="margin-right: 5px;">Edit</a>
+            <a (click)="onDelete()" class="btn btn-danger btn-sm">Delete</a>
+        </div>
+    </div>
+    <div class="panel-body">
+        <h3>Document Details</h3>
+        <p><strong>Type:</strong> {{ document.type }}</p>
+        <p><strong>Description:</strong> {{ document.description }}</p>
+        <p><strong>Document URL:</strong> {{ document.docFile }}</p>
+    </div>
+</div>

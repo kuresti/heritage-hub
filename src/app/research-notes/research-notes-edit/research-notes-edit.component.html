@@ -1,4 +1,4 @@
-<div class="panel panel-default">
+<div class="panel panel-default" style="background-color: #EABE7C;">
     <div class="panel-body">
         <form (ngSubmit)="onSubmit()">
             <div class="row">
@@ -10,6 +10,7 @@
                         class="form-control"
                         [(ngModel)]="subject"
                         name="subject"
+                        #subjectInput
                         required>
                 </div>
                 <div class="col-sm-12 form-group">
@@ -19,8 +20,20 @@
                         class="form-control"
                         [(ngModel)]="text"
                         name="text"
+                        #noteText
                         rows="10"
                         required></textarea>
+                </div>
+                <div class="col-sm-12 form-group">
+                    <label for="text">Note Author</label>
+                    <input
+                        type="text"
+                        id="author"
+                        class="form-control"
+                        
+                        name="author"
+                        #noteAuthor
+                        required>
                 </div>
             </div>
             <div class="row">

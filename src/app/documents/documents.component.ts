@@ -1,4 +1,9 @@
-import { Component } from '@angular/core';
+/********************************
+ * Imports
+ ********************************/
+import { Component, Input } from '@angular/core';
+
+import { Document } from '../documents/document.model';
 
 @Component({
   selector: 'heritage-hub-documents',
@@ -7,5 +12,8 @@ import { Component } from '@angular/core';
   styleUrl: './documents.component.css'
 })
 export class DocumentsComponent {
+  // Properties
+  @Input() document: Document;
+  selectedDocument: Document;
 
 }

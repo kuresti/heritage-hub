@@ -3,6 +3,8 @@
  ************************************/
 import { Component, Input } from '@angular/core';
 
+import { ResearchNote } from '../research-note.model'
+
 @Component({
   selector: 'heritage-hub-research-notes-item',
   standalone: false,
@@ -12,6 +14,7 @@ import { Component, Input } from '@angular/core';
 
 export class ResearchNotesItemComponent {
   // Properties
-   @Input() researchNote: { subject: string; text: string };
+   @Input() note: ResearchNote;
+  
 
 }

@@ -1,4 +1,4 @@
-export class ResearchNotes {
+export class ResearchNote {
     constructor(
         public id: string,
         public subject: string,
