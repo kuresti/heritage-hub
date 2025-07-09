@@ -1,0 +1,16 @@
+.messageHeader {
+    background-color: #4B88A2;   ;
+    border: solid thin #023047;
+    border-radius: 6px;
+    padding: 04rem;
+    font-size: 1.2rem;
+}
+
+.noteText {
+    border-radius: 6px;
+    padding: 5px;
+    margin-top: .25rem;
+    margin-left: 1rem;
+    font-size: 1.2rem;
+     color: #023047
+}

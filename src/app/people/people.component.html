@@ -1,0 +1,15 @@
+<div class="row">
+    <div class="col-md-5">
+        <heritage-hub-person-list (selectedPersonEvent)="selectedPerson = $event"></heritage-hub-person-list>
+    </div>
+    <div class="col-md-4">
+        <heritage-hub-person-detail 
+        *ngIf="selectedPerson"
+        [person]="selectedPerson"
+            ></heritage-hub-person-detail>
+    </div>
+   
+</div>
+<!-- <div>
+     <heritage-hub-person-list></heritage-hub-person-list>
+</div> -->

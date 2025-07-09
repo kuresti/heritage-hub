@@ -1,0 +1,36 @@
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <div class="pull-left"
+            *ngIf="person">
+            <h3 class="panel-title" style="margin-top: 0;">{{ person.firstName}} {{ person.lastName }}</h3>
+        </div>
+        <div class="pull-right" style="margin-top: 10px;">
+            <a class="btn btn-primary btn-sm" style="margin-right: 5px;">Edit</a>
+            <a (click)="addChildToParent(parent, child)" class="btn btn-success btn-sm" style="margin-right: 5px;">Add Child</a>
+            <a (click)="onDelete()" class="btn btn-danger btn-sm">Delete</a>
+        </div>
+    </div>
+    <div class="panel-body">
+        <h3>Details</h3>
+        <p><strong>First Name:</strong> {{ person.firstName }}</p>
+        <p><strong>Middle Name:</strong> {{ person.middleName }}</p>
+        <p><strong>Last Name:</strong> {{ person.lastName }}</p>
+        <p><strong>Birth Date:</strong> {{ person.birthDate }}</p>
+        <p><strong>Birth Place:</strong> {{ person.birthPlace }}</p>
+        <p><strong>Christening Date:</strong> {{ person.christeningDate }}</p>
+        <p><strong>Date of Death:</strong>  {{ person.deathDate }}</p>
+        <p><strong>Burial Place:</strong> {{ person.burialPlace }}</p>
+        <p><strong>Notes:</strong> {{ person.notes }}</p>
+
+        <p><strong>Children:</strong></p>
+        <ul *ngIf="person?.children && person.children.length  > 0; else noChildren">
+            <li *ngFor="let child of parent.children">
+                {{ child.firstName }} {{ child.middleName }} {{ child.lastNam}}
+            </li>
+        </ul>
+        <ng-template #noChildren>
+            <p><em>No children listed.</em></p>
+        </ng-template>
+
+    </div>
+</div>

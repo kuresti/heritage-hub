@@ -1,0 +1,9 @@
+.d-flex {
+    display: flex;
+}
+.align-items-end {
+    align-items: flex-end;
+}
+.h-100 {
+    height: 100%;
+}
