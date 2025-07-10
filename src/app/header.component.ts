@@ -1,7 +1,7 @@
 /***********************************
  * Imports
  ***********************************/
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component} from '@angular/core';
 
 @Component({
   selector: 'heritage-hub-header',
@@ -11,12 +11,9 @@ import { Component, Output, EventEmitter } from '@angular/core';
 })
 export class HeaderComponent {
   // Properties
-  @Output() selectedFeatureEvent = new EventEmitter<string>();
+ 
 
   // Methods
-  onSelected(selectedEvent: string) {
-    this.selectedFeatureEvent.emit(selectedEvent);
-  }
-
+  
 
 }

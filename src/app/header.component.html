@@ -6,9 +6,9 @@
 
         <div class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
-                <li><a (click)="onSelected('people')" style="color: #023047;">Family Tree</a></li>
-                <li><a (click)="onSelected('research-notes-list')" style="color: #023047;">Research Notes</a></li>
-                <li><a (click)="onSelected('documents')" style="color: #023047;">Documents</a></li>
+                <li routerLinkActive="active"><a [routerLink]="['/people']" style="color: #023047;">Family Tree</a></li>
+                <li routerLinkActive="active"><a [routerLink]="['/research-notes']" style="color: #023047;">Research Notes</a></li>
+                <li routerLinkActive="active"><a [routerLink]="['/documents']" style="color: #023047;">Documents</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown" heritageHubDropdown>
