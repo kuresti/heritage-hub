@@ -1,7 +1,7 @@
 /***************************
  * Imports
  ***************************/
-import { EventEmitter, Injectable, Output } from '@angular/core';
+import { EventEmitter, Injectable} from '@angular/core';
 
 import { Person } from './person.model';
 import { MOCKPERSON } from './MOCKPERSON';
@@ -12,7 +12,7 @@ import { MOCKPERSON } from './MOCKPERSON';
 export class PeopleService {
   // Properties
   people: Person[] = [];
-  @Output() selectedPersonEvent =  new EventEmitter<Person>();
+  
 
  // Methods
   constructor() {

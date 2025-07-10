@@ -1,0 +1,13 @@
+.list-group-item.active {
+    background-color: #4B88A2;
+    border-color: #023047;
+}
+.list-group-item.active .panel {
+    background-color: #EABE7C;
+    border-color: #023047;
+}
+.list-group-item.active .panel,
+.list-group-item.active .panel h3,
+.list-group-item.active .panel div {
+    color: #023;
+}

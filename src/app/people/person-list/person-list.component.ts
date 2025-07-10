@@ -1,7 +1,7 @@
 /**************************************
  * Imports
  **************************************/
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { Person } from '../person.model';
 import { PeopleService } from '../people.service';
@@ -30,9 +30,5 @@ export class PersonListComponent implements OnInit{
 
   ngOnInit(): void {
     this.people = this.peopleService.getPeople();
-  }
-
-  onSelected(person: Person) {
-    this.peopleService.selectedPersonEvent.emit(person);
   }
 }

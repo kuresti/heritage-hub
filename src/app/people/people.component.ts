@@ -1,10 +1,9 @@
 /*************************************
  * Imports
  *************************************/
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
-import { Person } from '../people/person.model';
-import { PeopleService } from './people.service';
+
 
 @Component({
   selector: 'heritage-hub-people',
@@ -12,18 +11,12 @@ import { PeopleService } from './people.service';
   templateUrl: './people.component.html',
   styleUrl: './people.component.css'
 })
-export class PeopleComponent implements OnInit {
+export class PeopleComponent {
  //Properties
- selectedPerson: Person;
+ 
 
  // Methods
- constructor(private peopleService: PeopleService) {}
+ constructor() {}
 
- ngOnInit(): void {
-   this.peopleService.selectedPersonEvent.subscribe(
-    (person: Person) => {
-      this.selectedPerson = person;
-    }
-   )
- }
+ 
 }
