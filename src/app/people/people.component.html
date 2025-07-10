@@ -3,10 +3,7 @@
         <heritage-hub-person-list></heritage-hub-person-list>
     </div>
     <div class="col-md-4">
-        <heritage-hub-person-detail 
-        *ngIf="selectedPerson"
-        [person]="selectedPerson"
-            ></heritage-hub-person-detail>
+        <router-outlet></router-outlet>
     </div>
    
 </div>
