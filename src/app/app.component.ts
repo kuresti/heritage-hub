@@ -13,10 +13,8 @@ import { Component } from '@angular/core';
 export class AppComponent {
   //Properties
   title = 'heritage-hub';
-  selectedFeature: string = 'people';
+ 
 
   // Methods
-  switchView(selectedFeature: string) {
-    this.selectedFeature = selectedFeature;
-  }
+ 
 }

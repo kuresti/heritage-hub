@@ -1,13 +1,9 @@
-<heritage-hub-header
-  (selectedFeatureEvent)="switchView($event)">
-</heritage-hub-header>
-<heritage-hub-people *ngIf="selectedFeature === 'people'"></heritage-hub-people>
-<heritage-hub-research-notes-list *ngIf="selectedFeature === 'research-notes-list'"></heritage-hub-research-notes-list>
-<heritage-hub-documents *ngIf="selectedFeature === 'documents'"></heritage-hub-documents>
+<heritage-hub-header></heritage-hub-header>
+
 <div class="container">
   <div class="row">
     <div class="col-md-12">
-
+      <router-outlet></router-outlet>
     </div>
   </div>
 </div>
