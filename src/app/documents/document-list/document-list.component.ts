@@ -1,9 +1,11 @@
 /********************************
  * Imports
  ********************************/
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 
 import { Document } from '../document.model'
+import { DocumentService } from '../document.service';
+
 
 @Component({
   selector: 'heritage-hub-document-list',
@@ -11,31 +13,18 @@ import { Document } from '../document.model'
   templateUrl: './document-list.component.html',
   styleUrl: './document-list.component.css'
 })
-export class DocumentListComponent {
+export class DocumentListComponent implements OnInit {
   // Properties
-  @Output() selectedDocumentEvent = new EventEmitter<Document>();
-
-  documents: Document[] = [
-    new Document( '1', 
-                  'Birth Certificate',
-                  'Official birth certificate of John Doe', 
-                  'assets/dummy.pdf', 
-                  '1',
-                  '7/9/2025',
-                   [] 
-      ),
-    new Document( '2',
-                  'Marriage Certificate',
-                  'Marriage cerficate of John and Jane Doe',
-                  'assets/dummy.pdf',
-                  '2',
-                  '7/9/2025',
-                  []
-    )
-  ]
+  documents: Document[] = []
 
   // Methods
+  constructor(private documentService: DocumentService) {}
+
+  ngOnInit(): void {
+    this.documents = this.documentService.getDocuments()
+  }
+
   onSelectedDocument(document: Document){
-    this.selectedDocumentEvent.emit(document);
+    this.documentService.selectedDocumentEvent.emit(document);
   }
 }

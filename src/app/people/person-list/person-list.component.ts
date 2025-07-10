@@ -1,9 +1,10 @@
 /**************************************
  * Imports
  **************************************/
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 
 import { Person } from '../person.model';
+import { PeopleService } from '../people.service';
 
 /***************************************
  * Component Decorator
@@ -18,54 +19,20 @@ import { Person } from '../person.model';
 /****************************************
  * PersonalListComponent 
  ****************************************/
-export class PersonListComponent {
+export class PersonListComponent implements OnInit{
   //Properties
-  @Output() selectedPersonEvent =   new EventEmitter<Person>();
+  
   // The people array will hold the list of Person objects;
-  people: Person[] = [
-    new Person(
-      '1',
-      'Christopher',
-      'John',
-      'Uresti',
-      '12/07/1973',
-      'Boise, Id',
-      'NA',
-      'Living',
-      'NA',
-      'Very Handsome Man',
-      []
-    ),
-    new Person(
-      '2',
-      'Kimberly',
-      'Lynn',
-      'Uresti',
-      '12/07/1973',
-      'Salt Lake City, UT',
-      'NA',
-      'Living',
-      'NA',
-      'Spouse of Christopher',
-      []
-    ),
-    new Person(
-      '3',
-      'Haydon',
-      'Duke',
-      'Uresti',
-      '06/24/2000',
-      'Salt Lake City, Ut',
-      'NA',
-      'Living',
-      'NA',
-      'Sweet Son',
-      []
-    )
-  ]
+  people: Person[] = []
 
   // Methods
+  constructor(private peopleService: PeopleService) {}
+
+  ngOnInit(): void {
+    this.people = this.peopleService.getPeople();
+  }
+
   onSelected(person: Person) {
-    this.selectedPersonEvent.emit(person);
+    this.peopleService.selectedPersonEvent.emit(person);
   }
 }

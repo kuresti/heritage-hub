@@ -1,9 +1,12 @@
 /************************************
  * Imports
  ************************************/
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
-import { ResearchNote } from '../research-note.model'
+import { ResearchNote } from '../research-note.model';
+import { PeopleService } from '../../people/people.service';
+
+
 
 @Component({
   selector: 'heritage-hub-research-notes-item',
@@ -15,6 +18,15 @@ import { ResearchNote } from '../research-note.model'
 export class ResearchNotesItemComponent {
   // Properties
    @Input() note: ResearchNote;
+   personName: string;
+
+  // Methods
+  constructor(private peopleService: PeopleService) {} 
+
+  ngOnInit() {
+    const person = this.peopleService.getPerson(this.note.personId);
+    this.personName = person ? person.firstName + '' + person.lastName : 'Unknown Person';
+  }
   
 
 }

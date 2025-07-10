@@ -4,6 +4,7 @@
 import { Component, ViewChild, ElementRef, Output, EventEmitter } from '@angular/core';
 
 import { ResearchNote } from '../research-note.model';  
+import { ResearchNotesService } from '../research-notes.service'; 
 
 @Component({
   selector: 'heritage-hub-research-notes-edit',
@@ -24,6 +25,7 @@ export class ResearchNotesEditComponent {
   
 
   // Methods
+  constructor(private researchNotesService: ResearchNotesService) {}
   onSubmit() {}
 
   onSendNote() {
@@ -33,7 +35,7 @@ export class ResearchNotesEditComponent {
      const noteAuthor = this.noteAuthorRef.nativeElement.value;
 
      const newNote = new ResearchNote(id, subject, noteText, this.personId, noteAuthor);
-        this.addNoteEvent.emit(newNote)
+        this.researchNotesService.addNote(newNote);
   }
   
 
