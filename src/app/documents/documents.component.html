@@ -3,9 +3,6 @@
         <heritage-hub-document-list></heritage-hub-document-list>
     </div>
     <div class="col-md-4">
-        <heritage-hub-document-details
-            *ngIf="selectedDocument"
-            [document]="selectedDocument">
-        </heritage-hub-document-details>
+        <router-outlet></router-outlet>
     </div>
 </div>

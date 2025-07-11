@@ -1,7 +1,7 @@
 /********************************
  * Imports
  ********************************/
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { Document } from '../documents/document.model';
 import { DocumentService } from  './document.service';
@@ -12,19 +12,12 @@ import { DocumentService } from  './document.service';
   templateUrl: './documents.component.html',
   styleUrl: './documents.component.css'
 })
-export class DocumentsComponent implements OnInit{
+export class DocumentsComponent {
   // Properties  
-  selectedDocument: Document;
 
   // Methods
   constructor(private documentService: DocumentService) {}
 
-  ngOnInit(): void {
-    this.documentService.selectedDocumentEvent.subscribe(
-      (document: Document) => {
-        this.selectedDocument = document;
-      }
-    )
-  }
+  
 
 }

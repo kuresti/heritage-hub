@@ -8,6 +8,8 @@ import { ResearchNotesListComponent } from './research-notes/research-notes-list
 import { DocumentsComponent } from './documents/documents.component';
 import { PersonEditComponent } from './people/person-edit/person-edit.component';
 import { PersonDetailComponent } from './people/person-detail/person-detail.component';
+import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
+import { DocumentDetailsComponent } from './documents/document-details/document-details.component';
 
 /***************************
  * Routes Definition
@@ -20,7 +22,11 @@ const routes: Routes = [
     { path: ':id/edit', component: PersonEditComponent }
   ] },
   { path: 'research-notes', component: ResearchNotesListComponent },
-  { path: 'documents', component: DocumentsComponent }  
+  { path: 'documents', component: DocumentsComponent, children: [
+    { path: 'new', component: DocumentEditComponent },
+    { path: ':id', component: DocumentDetailsComponent }, 
+    { path: ':id/edit', component: DocumentEditComponent }
+  ] }  
 ];
 
 /***************************
