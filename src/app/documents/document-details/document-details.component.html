@@ -5,7 +5,7 @@
              <h3 class="panel-title" style="margin-top: 0;">{{ document.type }} {{ document.description }}</h3>
         </div>
         <div class="pull-right" style="margin-top: 10px;">
-            <a class="btn btn-primary btn-sm" style="margin-right: 5px;">Edit</a>
+            <a [routerLink]="['edit']" class="btn btn-primary btn-sm" style="margin-right: 5px;">Edit</a>
             <a (click)="onDelete()" class="btn btn-danger btn-sm">Delete</a>
         </div>
     </div>

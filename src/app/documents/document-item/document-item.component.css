@@ -1,16 +1,20 @@
-.documentHeader {
-    background-color: #AAEFDF;
-    border: solid thin #023047;
-    border-radius: 10px;
-    padding: 0.4rem;
-    font-size: 1.5rem;
+.list-group-item.active {
+    background-color: #4B88A2;
+    border-color: #023047;
 }
-
+.list-group-item.active  {
+    background-color: #EABE7C;
+    border-color: #023047;
+}
+.list-group-item.active,
+.list-group-item.active div {
+    color: #000;
+}
 .docFile {
     border-radius: 10px;
     padding: 5px;
     margin-top: .25rem;
-    margin-left: 1rem;
+    margin-left: .25rem;
     font-size: 1.5rem;
 }
 
