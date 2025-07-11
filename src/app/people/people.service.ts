@@ -12,7 +12,7 @@ import { MOCKPERSON } from './MOCKPERSON';
 export class PeopleService {
   // Properties
   people: Person[] = [];
-  
+  peopleChangedEvent = new EventEmitter<Person[]>();
 
  // Methods
   constructor() {
@@ -31,4 +31,16 @@ export class PeopleService {
     }
     return null;
    }
+
+   deletePerson(person: Person) {
+    if(!person) {
+      return;
+    }
+    const pos = this.people.indexOf(person);
+    if (pos < 0) {
+      return;
+    }
+    this.people.splice(pos, 1);
+    this.peopleChangedEvent.emit(this.people.slice())
+  }
 }

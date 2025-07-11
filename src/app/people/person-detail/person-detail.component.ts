@@ -2,7 +2,7 @@
  * Imports
  **************************************/
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Person } from '../person.model';
 import { PeopleService } from '../people.service';
@@ -23,7 +23,8 @@ export class PersonDetailComponent implements OnInit {
 
  //Methods
  constructor(private route: ActivatedRoute,
-             private peopleService: PeopleService) {}
+             private peopleService: PeopleService,
+             private router: Router) {}
 
   ngOnInit() {
     this.route.params.subscribe(
@@ -41,5 +42,8 @@ export class PersonDetailComponent implements OnInit {
     parent.children.push(child);
   }
 
-  onDelete() {}
+  onDelete() {
+    this.peopleService.deletePerson(this.person)
+    this.router.navigate(['/people']);
+  }
 }

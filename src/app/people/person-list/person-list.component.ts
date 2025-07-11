@@ -29,6 +29,13 @@ export class PersonListComponent implements OnInit{
   constructor(private peopleService: PeopleService) {}
 
   ngOnInit(): void {
+    this.peopleService.peopleChangedEvent.subscribe(
+      (person: Person[]) => {
+        this.people = person;
+      }
+    )
     this.people = this.peopleService.getPeople();
   }
+
+  
 }
