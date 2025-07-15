@@ -1,45 +1,58 @@
 <div class="panel panel-default" style="background-color: #EABE7C;">
     <div class="panel-body">
-        <form (ngSubmit)="onSubmit()">
-            <div class="row">
+        <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+            
                 <div class="col-sm-12 form-group">
                     <label for="subject">Subject</label>
                     <input
                         type="text"
                         id="subject"
                         class="form-control"
-                        [(ngModel)]="subject"
+                        [(ngModel)]="note.subject"
                         name="subject"
-                        #subjectInput
+                        #subject="ngModel"
                         required>
+                </div>
+                <div
+                    *ngIf="!subject.valid && subject.touched"
+                    class="alert alert-danger mt-2">
+                    The Subject is a required field.
                 </div>
                 <div class="col-sm-12 form-group">
                     <label for="text">Research Notes</label>
                     <textarea
                         id="text"
                         class="form-control"
-                        [(ngModel)]="text"
+                        [(ngModel)]="note.text"
                         name="text"
-                        #noteText
-                        rows="10"
-                        required></textarea>
+                        #text="ngModel"
+                        rows="10"></textarea>
                 </div>
                 <div class="col-sm-12 form-group">
                     <label for="text">Note Author</label>
                     <input
                         type="text"
                         id="author"
-                        class="form-control"
-                        
+                        class="form-control"                        
                         name="author"
-                        #noteAuthor
+                        [(ngModel)]="note.author"
+                        #author="ngModel"
                         required>
                 </div>
-            </div>
+                <div
+                    *ngIf="!author.valid && author.touched"
+                    class="alert alert-danger mt-2">
+                    Author is a required field.
+                </div>
+           
             <div class="row">
                 <div class="col-xs-12">
-                    <button class="btn btn-success"(click)="onSendNote()" type="submit">Save</button>
+                    <button class="btn btn-success" 
+                            (click)="onSendNote()" 
+                            [disabled]="!f.valid"
+                            type="submit">Save</button>
                     <button class="btn btn-danger" type="button" (click)="onClear()">Clear</button>
+                    <button class="btn btn-primary" type="button" (click)="onCancel()">Cancel</button>
                 </div>
             </div>
         </form>

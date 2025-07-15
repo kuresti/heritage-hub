@@ -7,22 +7,31 @@
                         <div class="row">
                             <span class="title pad-left-right">Family</span>
                             <div class="pull-right pad-left-right">
-                            <a class="btn btn-success btn-sm" [routerLink]="['/people/new']" style="margin-right: 5px;">New Person</a>
+                            <a class="btn btn-success btn-sm" [routerLink]="['/people/new']" style="margin-right: 5px;">Add Person</a>
                         </div>
                         </div>
                         
                         </div>
-                    </div>
-                    <div class="panel-body">
+                    
+                    <div
+                        cdkDropList
+                        id="peopleList"
+                        [cdkDropListData]="people"
+                        [cdkDropListConnectedTo]="['childrenList']"                        
+                        class="people-drop-zone">
+                   
                        <heritage-hub-person-item
-                        *ngFor="let person of people; let i = index"
+                        *ngFor="let person of people | personFilterPipe:term"
                         [person]="person"
-                        [index]="i"></heritage-hub-person-item>
+                        cdkDrag
+                        [cdkDragData]="person"></heritage-hub-person-item>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    </div>
+
 <!-- <ul>
                         <li *ngFor="let person of people">
                             {{ person.firstName }} {{ person.lastName }}

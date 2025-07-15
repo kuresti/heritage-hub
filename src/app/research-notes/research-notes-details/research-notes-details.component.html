@@ -1,1 +1,19 @@
-<p>research-notes-details works!</p>
+<div class="panel panel-default">
+    <div class="panel-heading clearfix">
+        <div class="pull-left"
+             *ngIf="note">
+             <h3 class="panel-title" style="margin-top: 0;">Note Regarding: {{ personName }}</h3>
+            </div>
+        <div class="pull-right" style="margin-top: 10px;">
+            <a [routerLink]="['edit']" class="btn btn-primary" style="margin-right: 5px;">Edit</a>
+            <a (click)="onDelete()" class="btn btn-danger btn-sm">Delete</a>
+        </div>    
+    </div>
+    <div class="panel-body">
+        <h3>Note Details</h3>
+        <p><strong>Regarding: </strong> {{ personName }}</p>
+        <p><strong>Subject: </strong> {{ note.subject }}</p>
+        <p><strong>Author: </strong> {{ note.author }}</p>
+        <p>{{ note.text }}</p>
+    </div>
+    </div>

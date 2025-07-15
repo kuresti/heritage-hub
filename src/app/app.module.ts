@@ -19,6 +19,9 @@ import { DocumentDetailsComponent } from './documents/document-details/document-
 import { ResearchNotesEditComponent } from './research-notes/research-notes-edit/research-notes-edit.component';
 import { ResearchNotesItemComponent } from './research-notes/research-notes-item/research-notes-item.component';
 import { ResearchNotesDetailsComponent } from './research-notes/research-notes-details/research-notes-details.component';
+import { ResearchNotesComponent } from './research-notes/research-notes.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { PersonFilterPipePipe } from './people/person-filter.pipe.pipe';
 
 
 
@@ -40,13 +43,16 @@ import { ResearchNotesDetailsComponent } from './research-notes/research-notes-d
     ResearchNotesEditComponent,
     ResearchNotesItemComponent,
     ResearchNotesDetailsComponent,
+    ResearchNotesComponent,
+    PersonFilterPipePipe,
     
     
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    DragDropModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -7,6 +7,7 @@ export class Person {
                   public birthDate: string,
                   public birthPlace: string,
                   public christeningDate: string,
+                  public marriageDate: string,
                   public deathDate: string,
                   public burialPlace: string,
                   public notes: string,

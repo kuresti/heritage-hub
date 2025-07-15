@@ -10,6 +10,9 @@ import { PersonEditComponent } from './people/person-edit/person-edit.component'
 import { PersonDetailComponent } from './people/person-detail/person-detail.component';
 import { DocumentEditComponent } from './documents/document-edit/document-edit.component';
 import { DocumentDetailsComponent } from './documents/document-details/document-details.component';
+import { ResearchNotesComponent } from './research-notes/research-notes.component';
+import { ResearchNotesEditComponent } from './research-notes/research-notes-edit/research-notes-edit.component';
+import { ResearchNotesDetailsComponent } from './research-notes/research-notes-details/research-notes-details.component';
 
 /***************************
  * Routes Definition
@@ -21,7 +24,11 @@ const routes: Routes = [
     { path: ':id', component: PersonDetailComponent },
     { path: ':id/edit', component: PersonEditComponent }
   ] },
-  { path: 'research-notes', component: ResearchNotesListComponent },
+  { path: 'research-notes', component: ResearchNotesComponent, children: [
+    { path: 'new', component: ResearchNotesEditComponent },
+    { path: ':id', component: ResearchNotesDetailsComponent },
+    { path: ':id/edit', component: ResearchNotesEditComponent }
+  ] },
   { path: 'documents', component: DocumentsComponent, children: [
     { path: 'new', component: DocumentEditComponent },
     { path: ':id', component: DocumentDetailsComponent }, 

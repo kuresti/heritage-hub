@@ -1,7 +1,8 @@
 /**************************************
  * Imports
  **************************************/
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 
 import { Person } from '../person.model';
 import { PeopleService } from '../people.service';
@@ -19,22 +20,26 @@ import { PeopleService } from '../people.service';
 /****************************************
  * PersonalListComponent 
  ****************************************/
-export class PersonListComponent implements OnInit{
+export class PersonListComponent implements OnInit, OnDestroy{
   //Properties
-  
+  subscription: Subscription;
   // The people array will hold the list of Person objects;
   people: Person[] = []
+  term: string = '';
 
   // Methods
   constructor(private peopleService: PeopleService) {}
 
   ngOnInit(): void {
-    this.peopleService.peopleChangedEvent.subscribe(
-      (person: Person[]) => {
-        this.people = person;
-      }
-    )
-    this.people = this.peopleService.getPeople();
+     this.people = this.peopleService.getPeople();
+    this.subscription = this.peopleService.peopleListChangedEvent.subscribe(
+      (personList: Person[]) => {
+        this.people = personList;
+      });   
+  }
+
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
 
   

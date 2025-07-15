@@ -1,21 +1,33 @@
 <div class="panel panel-default">
     <div class="panel-body">
-        <form id="document-edit">
+        <form #f="ngForm" (ngSubmit)="onSubmit(f)" id="document-edit">
             <div class="row">
                 <div class="col-sm-12 form-goup">
                     <label for="type">Document Type</label>
                     <input type="text"
                            id="doc-type"
+                           name="doc-type"
+                           required
+                           [(ngModel)]="document.type"
+                           #type="ngModel"
                            class="form-control"
                            size="120"
                            max="120">
                 </div>
+                  <div
+                    *ngIf="!type.valid && type.touched"
+                    class="alert alert-danger mt-2">
+                    Document type is a required field.
+                </div> 
                 <div class="col-sm-12 form-group">
                     <label for="description">Description</label>
                     <input
                         type="text"
                         class="form-control"
                         id="description"
+                        name="description"
+                        [(ngModel)]="document.description"
+                        #description="ngModel"
                         max="255"
                         size="120">
                 </div>
@@ -25,19 +37,45 @@
                         type="text"
                         class="form-control"
                         id="docFile"
+                        name="docFile"
+                        [(ngModel)]="document.docFile"
+                        #docFile="ngModel"
+                        required
                         max="120"
                         size="120">
                 </div>
+                  <div
+                    *ngIf="!docFile.valid && docFile.touched"
+                    class="alert alert-danger mt-2">
+                    The document file url is a required field.
+                </div> 
                 <div class="col-sm-12 form-group">
                     <label for="date-added">Date Added</label>
                     <input
                         type="text"
                         class="form-control"
                         id="date-added"
+                        name="date-added"
+                        [(ngModel)]="document.dateAdded"
+                        #dateAdded="ngModel"
+                        required
                         max="255"
                         size="120">
                 </div>
-
+                  <div
+                    *ngIf="!dateAdded.valid && dateAdded.touched"
+                    class="alert alert-danger mt-2">
+                    Date Added is a required field.
+                </div> 
+            </div>
+            <div class="row">
+                <div class="col-xs-12 btn-toolbar">
+                    <button class="btn btn-success" 
+                            type="submit"
+                            [disabled]="!f.valid">Save</button>
+                    <button class="btn btn-primary" type="button" >Cancel</button>
+                    <button class="btn btn-danger" type="button" (click)="onClear()">Clear</button>
+                </div>
             </div>
         </form>
     </div>

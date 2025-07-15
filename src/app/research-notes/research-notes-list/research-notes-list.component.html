@@ -4,6 +4,8 @@
             <div class="panel-heading">
                 <div class="row pad-left-right">
                     <span class="title pull-left">Research Notes</span>
+                    <div class="pull-right pad-left-right">
+                        <a class="btn btn-success btn-sm" [routerLink]="['/research-notes/new']" style="margin-right: 5px;">Add Note</a>
                 </div>
             </div>
             <div class="panel-body">
@@ -11,16 +13,14 @@
                     <div class="col-xs-12">
                         <div *ngFor="let note of notes">
                         <heritage-hub-research-notes-item 
-                                        [note]="note">
+                                        *ngFor="let note of notes; let i = index"
+                                        [note]="note"
+                                        [index]="i">
                                     </heritage-hub-research-notes-item>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="panel-footer">
-                <heritage-hub-research-notes-edit
-                    (addNoteEvent)="onAddResearchNote($event)"></heritage-hub-research-notes-edit>
-            </div>
-        </div>
+           
     </div>
 </div>

@@ -1,0 +1,32 @@
+.required.ng-invalid {
+    border: 1px solid #c1121f;
+}
+
+.invalid.ng-invalid.ng-dirty {
+    border: 1px solid #c1121f;
+}
+
+.pad-left-right {
+    padding-left: .1rem;
+}
+
+.deleteButton {
+    margin-top: 1.5rem;
+    margin-left: -1.2rem;
+    width: 3.4rem;
+}
+
+.buttonDiv {
+    margin-top: 1.5rem;
+}
+
+.groupDiv {
+    min-height: 6rem;
+    border: solid thin lightslategray;
+}
+
+.dragMsg {
+    font-size: 2rem;
+    color: darkslategray;
+    margin-left: 3rem;
+}

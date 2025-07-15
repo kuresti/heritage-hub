@@ -1,10 +1,10 @@
-<a class="list-group-item clearfix">
+<a class="list-group-item clearfix"
+   [routerLink]="[note.id]"
+   routerLinkActive="active" >
     <div>
         <h4><strong>Note Regarding: </strong> {{ personName }}</h4>
-        <p><strong>Subject: </strong> {{ note.subject }}</p>
-        <p><strong>Text: </strong> {{ note.text }}</p>
-        <p><strong>Note Author: </strong> {{ note.author }}</p>
-        
+        <p><strong>Subject: </strong> {{ note.subject }}</p> 
+        <p><strong>Note: </strong> {{ note.text }}</p>     
         
     </div>
 </a>
