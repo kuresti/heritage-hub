@@ -1,7 +1,7 @@
 /**************************
  * Imports
  **************************/
-import { Component, OnInit, ViewChild, ElementRef} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 import { NgForm } from '@angular/forms';
 
@@ -27,11 +27,7 @@ export class DocumentEditComponent implements OnInit{
     document: Document = new Document('', '', '', '', '', '', []);
     editMode: boolean = false;
     id: string;
-    @ViewChild('type') typeRef:ElementRef;
-    @ViewChild('description') descriptionRef:ElementRef;
-    @ViewChild('docFile') docFileRef:ElementRef;
-    @ViewChild('dateAdded') dateAddedRef:ElementRef;
-
+    
   // Methods
   constructor(private documentService: DocumentService,
               private router: Router,
@@ -64,12 +60,12 @@ export class DocumentEditComponent implements OnInit{
     });
   }
 
-   onClear() {
-    this.typeRef.nativeElement.value = '';
-    this.descriptionRef.nativeElement.value = '';
-    this.docFileRef.nativeElement.value = '';
-    this.dateAddedRef.nativeElement.value = '';
-   }
+  //  onClear() {
+  //   this.typeRef.nativeElement.value = '';
+  //   this.descriptionRef.nativeElement.value = '';
+  //   this.docFileRef.nativeElement.value = '';
+  //   this.dateAddedRef.nativeElement.value = '';
+  //  }
    
    onCancel() {
     this.router.navigate(['/documents']);
@@ -85,4 +81,5 @@ export class DocumentEditComponent implements OnInit{
       }
       this.router.navigate(['/documents'], {relativeTo: this.route});
     }  
+
 }

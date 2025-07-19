@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header.component';
 import { PeopleComponent } from './people/people.component';
@@ -20,7 +22,6 @@ import { ResearchNotesEditComponent } from './research-notes/research-notes-edit
 import { ResearchNotesItemComponent } from './research-notes/research-notes-item/research-notes-item.component';
 import { ResearchNotesDetailsComponent } from './research-notes/research-notes-details/research-notes-details.component';
 import { ResearchNotesComponent } from './research-notes/research-notes.component';
-import { DragDropModule } from '@angular/cdk/drag-drop';
 import { PersonFilterPipePipe } from './people/person-filter.pipe.pipe';
 
 
@@ -53,6 +54,8 @@ import { PersonFilterPipePipe } from './people/person-filter.pipe.pipe';
     AppRoutingModule,
     FormsModule,
     DragDropModule,
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

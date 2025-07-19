@@ -23,7 +23,7 @@ export class PersonFilterPipePipe implements PipeTransform {
     if (!people || !term) return people;
 
     const filteredPeople = people.filter(person =>
-      person.firstName.toLowerCase().includes(term.toLowerCase())
+      `${person.firstName} ${person.middleName ?? ''} ${person.lastName}`.toLowerCase().includes(term.toLowerCase())
     );
 
     return filteredPeople.length > 0 ? filteredPeople : people;

@@ -1,9 +1,9 @@
 /*********************************
  * Imports
  *********************************/
-import { Component, ViewChild, ElementRef, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 import { ResearchNote } from '../research-note.model';  
 import { ResearchNotesService } from '../research-notes.service'; 
@@ -17,88 +17,85 @@ import { ResearchNotesService } from '../research-notes.service';
 
 export class ResearchNotesEditComponent implements OnInit {
  // Properties
-  text: string;
-  author: string;
+  form: FormGroup;
   personId: string;
-  @ViewChild('subjectInput') subjectInputRef: ElementRef;
-  @ViewChild('noteText') noteTextRef: ElementRef;
-  @ViewChild('noteAuthor') noteAuthorRef: ElementRef;
-  originalNote: ResearchNote;
+  originalNote?: ResearchNote;
   note: ResearchNote = new ResearchNote('', '', '', '', '');
   editMode: boolean = false;
   id: string;
 
   // Methods
-  constructor(private researchNotesService: ResearchNotesService,
+  constructor(private fb: FormBuilder,
+              private researchNotesService: ResearchNotesService,
               private route: ActivatedRoute,
               private router: Router,
   ) {}
 
   ngOnInit(): void {
+    // Initialize the form
+    this.form = this.fb.group({
+      subject: ['', Validators.required],
+      text: ['', Validators.required],
+      author: ['', Validators.required]
+    });
+
+    // Get the personId from the query parameters
     this.route.queryParams.subscribe(params => {
       this.personId = params['personId'] || null;
     });
-
+    // Determine if we are in edit mode or not
     this.route.params.subscribe((params: Params) => {
       // Get the id from the URL
       const id = params['id'];
-
-      if (!id) {
-        // No ID: creating a new research note
-        this.editMode = false;
-        return;
-      }
+      if (!id) return;
+     
 
       // Try to get the original research note
       this.originalNote = this.researchNotesService.getResearchNote(id);
 
-      if (!this.originalNote) {
-        // No note found with that id
-        return;
-      }
+      if (!this.originalNote) return;
 
       // Editing Mode
       this.editMode = true;
+      this.id = id;
+      this.note = { ...this.originalNote }; // Spread operator to create a shallow copy
 
-      // Deep copy so original isn't modified
-      this.note = JSON.parse(JSON.stringify(this.originalNote));
+      // Patch form with original note values
+      this.form.patchValue({
+        subject: this.note.subject,
+        text: this.note.text,
+        personId: this.note.personId,
+        author: this.note.author
+      });      
     });
   }
 
-  onSubmit(form: NgForm ) {
-    const value = form.value;
-    const newNote = new ResearchNote(value.id, value.subject, value.text, value.personId, value.author);
+  onSubmit() {
+    if (this.form.invalid) return;
+    
+    const formValues = this.form.value;
+    const newNote = new ResearchNote(
+      this.editMode ? this.id : '',
+      formValues.subject,
+      formValues.text,
+      this.personId,
+      formValues.author
+    );
+
     if (this.editMode) {
-      this.researchNotesService.updateNote(this.originalNote, newNote)
+      this.researchNotesService.updateNote(this.originalNote, newNote);
     } else {
-      this.researchNotesService.addNote(newNote)
+      this.researchNotesService.addNote(newNote);
     }
-    this.router.navigate(['/research-notes'], {relativeTo: this.route});
-  }
-  
+    this.router.navigate(['/research-notes']);
+    }
+    
   onCancel() {
     this.router.navigate(['/research-notes']);
-  }
-  
-  onSendNote() {
-    const id = '100';
-     const subject = this.subjectInputRef.nativeElement.value;
-     const noteText = this.noteTextRef.nativeElement.value;
-     const noteAuthor = this.noteAuthorRef.nativeElement.value;
-
-     const newNote = new ResearchNote(id, subject, noteText, this.personId, noteAuthor);
-        this.researchNotesService.addNote(newNote);
-  }
-  
-
-  onSave() {
-   
-  }
+  } 
 
   onClear() {
-      this.subjectInputRef.nativeElement.value = '';
-      this.noteTextRef.nativeElement.value = '';
-      this.noteAuthorRef.nativeElement.value = '';
+      this.form.reset();
   }
    
 }

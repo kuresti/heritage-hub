@@ -1,0 +1,57 @@
+[
+    {
+        "id":"1",
+        "type":"Marriage Certificate",
+        "description":"Affvidavit of Marriage",
+        "docFile":"../src/assets/images/S3HY-6QHS-ZDH-marriage-certificate-Catherine-OBrien.jpg",
+        "personId":"23",
+        "dateAdded":"16 July 2025",
+        "children":[]
+    },
+    {
+        "id":"2",
+        "type":"Registration Card",
+        "description":"Military Draft registration",
+        "docFile":"../src/assets/images/image-military-draft-registration.jpg",
+        "personId":"15",
+        "dateAdded":"16 July 2025",
+        "children":[]
+    },
+    {
+        "id":"3",
+        "type":"Military Record",
+        "description":"Veteran's Affair Master Index",
+        "docFile":"../src/assets/images/image (1).jpg",
+        "personId":"7",
+        "dateAdded":"16 July 2025",
+        "children":[]
+    },
+    {
+        "id":"4",
+        "type":"Certificate",
+        "description":"Death Certificate",
+        "docFile":"../src/assets/images/image-death-certificate.jpg",
+        "personId":"19",
+        "dateAdded":"16 July 2025",
+        "children":[]
+    },
+    {
+        "id":"5",
+        "type":"Town record",
+        "description":"Marriage record",
+        "docFile":"../src/assets/images/image-Edward-Partridge-marriage-record.jpg",
+        "personId":"31",
+        "dateAdded":"16 July 2025",
+        "children":[]
+    },
+    {
+        "id":"6",
+        "type":"Census",
+        "description":"Census Record 1900",
+        "docFile":"../src/assets/images/image-census-record.jpg",
+        "personId":"21",
+        "dateAdded":"16 July 2025",
+        "children":[]
+    }
+]
+   

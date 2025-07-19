@@ -1,11 +1,11 @@
 /***************************
  * Imports
  ***************************/
-import { Injectable, OnInit, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subject } from 'rxjs';
 
 import { ResearchNote } from './research-note.model';
-import { MOCKRESEARCHNOTES } from './MOCKRESEARCHNOTES';
 
 /**************************
  * Injected Globally
@@ -17,25 +17,42 @@ import { MOCKRESEARCHNOTES } from './MOCKRESEARCHNOTES';
 /**************************
  * Class
  **************************/
-export class ResearchNotesService implements OnInit{
+export class ResearchNotesService {
   // Properties
   notes: ResearchNote[] = [];
-  noteChangedEvent = new EventEmitter<ResearchNote[]>();
   noteListChangedEvent = new Subject<ResearchNote[]>();
   maxNoteId: number;
 
   // Methods
-  constructor() {
-    this.notes = MOCKRESEARCHNOTES;
-    this.maxNoteId = this.getMaxId();
+  constructor(private http: HttpClient) {
+    
+   }
+  
+   private sortAndSend() {
+    // Sorts notes by subject
+    this.notes.sort((a, b) => a.subject.localeCompare(b.subject));
+
+    // Emits a copy of the array to subscribers
+    this.noteListChangedEvent.next(this.notes.slice());
    }
 
-   ngOnInit(): void {
-     
+    getResearchNotes() {
+    this.http.get<{message: string; researchNotes:ResearchNote[] }>('http://localhost:3000/research-notes')
+      .subscribe({
+        next: (response)  => {
+          this.notes = response.researchNotes;
+          this.maxNoteId = this.getMaxId();
+          this.sortAndSend();
+        }, error: (err) => console.error('Error fetching research-notes:', err)
+      });
    }
+  
 
    getMaxId(): number {
     let maxId = 0;
+    if (!Array.isArray(this.notes)) {
+      return 0;
+    }
 
     for (let note of this.notes) {
       const currentId = parseInt(note.id);
@@ -46,9 +63,7 @@ export class ResearchNotesService implements OnInit{
     return maxId;
    }
 
-   getResearchNotes() {
-    return this.notes.slice();
-   }
+  
 
    getResearchNote(id: string) {
      for (let note of this.notes) {
@@ -64,26 +79,40 @@ export class ResearchNotesService implements OnInit{
       return;
      }
 
-     this.maxNoteId++;
-     newNote.id = this.maxNoteId.toString();
+     // Make sure the id of the new message is empty
+     newNote.id = '';
 
-     this.notes.push(newNote);
+     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-     const notesListClone = this.notes.slice();
-     this.noteChangedEvent.next(notesListClone);
-   }
+     // Add to database
+     this.http.post<{ name: string, note: ResearchNote }>('http://localhost:3000/research-notes', newNote, { headers })
+       .subscribe(
+          (responseData) => {
+            //Add the new note to the database
+          this.notes.push(responseData.note);
+          this.sortAndSend();
+          });
+   }     
 
    deleteNote(note: ResearchNote) {
     if (!note) {
       return;
     }
-    const pos = this.notes.indexOf(note);
+
+    const pos = this.notes.findIndex(n => n.id === note.id);
     if (pos < 0){
       return;
     }
-    this.notes.slice(pos, 1);
-    const notesListClone = this.notes.slice();
-    this.noteChangedEvent.next(notesListClone);
+
+    // Remove from database
+    this.http.delete(`http://localhost:3000/research-notes/${note.id}`)
+      .subscribe(
+        (response: Response) => {
+          this.notes.splice(pos, 1);
+          this.sortAndSend();
+        }
+      )
+    
  }
 
  updateNote(originalNote: ResearchNote, newNote: ResearchNote) {
@@ -97,9 +126,15 @@ export class ResearchNotesService implements OnInit{
   }
 
   newNote.id = originalNote.id;
-  this.notes[pos] = newNote;
-
-  const notesListClone = this.notes.slice();
-  this.noteListChangedEvent.next(notesListClone);
+  const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+  
+  // Update the note in the database
+  this.http.put(`http://localhost:3000/research-notes/${originalNote.id}`, newNote, { headers })
+    .subscribe(
+      (response: Response) => {
+        this.notes[pos] = newNote;
+        this.sortAndSend();
+      }
+    );  
  }
 }

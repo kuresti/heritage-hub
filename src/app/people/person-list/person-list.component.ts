@@ -22,20 +22,25 @@ import { PeopleService } from '../people.service';
  ****************************************/
 export class PersonListComponent implements OnInit, OnDestroy{
   //Properties
-  subscription: Subscription;
+  private subscription: Subscription;
   // The people array will hold the list of Person objects;
   people: Person[] = []
   term: string = '';
 
   // Methods
-  constructor(private peopleService: PeopleService) {}
+   constructor( private peopleService: PeopleService) {}
+   
 
-  ngOnInit(): void {
-     this.people = this.peopleService.getPeople();
+  ngOnInit() {
+    this.peopleService.getPeople();
     this.subscription = this.peopleService.peopleListChangedEvent.subscribe(
       (personList: Person[]) => {
         this.people = personList;
       });   
+  }
+
+  search(value: string) {
+    this.term = value;
   }
 
   ngOnDestroy(): void {

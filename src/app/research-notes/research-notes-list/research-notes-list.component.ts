@@ -22,8 +22,8 @@ export class ResearchNotesListComponent implements OnInit, OnDestroy{
   constructor(private researchNotesService: ResearchNotesService) {}
 
   ngOnInit(): void {
-    this.notes = this.researchNotesService.getResearchNotes();
-    this.subscription = this.researchNotesService.noteChangedEvent.subscribe(
+    this.researchNotesService.getResearchNotes();
+    this.subscription = this.researchNotesService.noteListChangedEvent.subscribe(
       (notes: ResearchNote[]) => {
         this.notes = notes
       }

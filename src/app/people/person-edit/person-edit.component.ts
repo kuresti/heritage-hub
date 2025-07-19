@@ -1,7 +1,7 @@
 /**************************************
  * Imports
  **************************************/
-import { Component, OnInit, ViewChild, ElementRef, viewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgForm }from '@angular/forms'
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
@@ -18,11 +18,13 @@ import { PeopleService } from '../people.service'
   templateUrl: './person-edit.component.html',
   styleUrl: './person-edit.component.css'
 })
+/***************************************
+ * Class
+ ***************************************/
 export class PersonEditComponent implements OnInit{
-  // Properties
-  originalPerson: Person; // Original, unedited Person
+  // Properties  
   person: Person = new Person('', '', '', '', '', '', '', '', '', '', '', []); // Edited version of Person
-  child: Person;
+  originalPerson: Person; // Original, unedited Person
   editMode: boolean = false; // Indicates existing Person to be edited, or a new Person being created
   id: string;
   children: Person[] = [];
@@ -30,20 +32,9 @@ export class PersonEditComponent implements OnInit{
   invalidChild: boolean = false;
   childDropListId = 'peronEditList';  // The childDropListId is used to identify the drop list for dragging and dropping children into the children array.
   childrenDropListId = 'childrenPersonList'
-  @ViewChild('firstName') firstNameRef:ElementRef;
-  @ViewChild('middleName') middleNameRef:ElementRef;
-  @ViewChild('lastName') lastNameRef:ElementRef;
-  @ViewChild('birthDate') birthDateRef:ElementRef;
-  @ViewChild('birthPlace') birthPlaceRef:ElementRef;
-  @ViewChild('christeningDate') christeningDateRef:ElementRef;
-  @ViewChild('marriageDate') marriageDateRef:ElementRef;
-  @ViewChild('deathDate') deathDateRef:ElementRef;
-  @ViewChild('burialPlace') burialPlaceRef:ElementRef;
+  child: Person;
   
-
-
-  // Methods
-  constructor(private peopleService: PeopleService,
+   constructor(private peopleService: PeopleService,
               private router: Router,
               private route: ActivatedRoute
   ) {}
@@ -57,6 +48,7 @@ export class PersonEditComponent implements OnInit{
         this.editMode = false;
         return;
       }
+      this.peopleService.getPeople();
 
       // gets the original person
       this.originalPerson = this.peopleService.getPerson(id);
@@ -73,17 +65,15 @@ export class PersonEditComponent implements OnInit{
       this.person = JSON.parse(JSON.stringify(this.originalPerson));
 
       if(this.person.children) {
-        this.children = this.person.children.slice();
+        this.children = this.person.children
+          .map(childId => this.peopleService.getPerson(childId))
+          .filter((child: Person | undefined): child is Person => !!child);
       }
       this.peopleService.getPeople();
     });
   }
 
-  onCancel() {
-    this.router.navigate(['/people']);
-  }
-
-  onSubmit(form: NgForm) {
+   onSubmit(form: NgForm) {
     const value = form.value;
     const newPerson = new Person(value.id, 
                                  value.firstName, 
@@ -96,7 +86,7 @@ export class PersonEditComponent implements OnInit{
                                  value.deathDate, 
                                  value.burialPlace, 
                                  value.notes,
-                                 this.children)
+                                 this.children.map(child => child.id));
     if (this.editMode) {
       this.peopleService.updatePerson(this.originalPerson, newPerson)
     } else {
@@ -105,26 +95,37 @@ export class PersonEditComponent implements OnInit{
     this.router.navigate(['/people'], {relativeTo: this.route});
   }
 
-  onClear() {
-    this.firstNameRef.nativeElement.value = '';
-    this.middleNameRef.nativeElement.value = '';
-    this.lastNameRef.nativeElement.value = '';
-    this.birthDateRef.nativeElement.value = '';
-    this.birthPlaceRef.nativeElement.value = '';
-    this.christeningDateRef.nativeElement.value = '';
-    this.marriageDateRef.nativeElement.value = '';
-    this.deathDateRef.nativeElement.value = '';
-    this.burialPlaceRef.nativeElement.value = '';
+
+  onCancel() {
+    this.router.navigate(['/people']);
   }
+
+  onRemoveItem(index: number) {
+    this.children.splice(index, 1);
+  }
+  
+
+ 
+  // onClear() {
+  //   this.firstNameRef.nativeElement.value = '';
+  //   this.middleNameRef.nativeElement.value = '';
+  //   this.lastNameRef.nativeElement.value = '';
+  //   this.birthDateRef.nativeElement.value = '';
+  //   this.birthPlaceRef.nativeElement.value = '';
+  //   this.christeningDateRef.nativeElement.value = '';
+  //   this.marriageDateRef.nativeElement.value = '';
+  //   this.deathDateRef.nativeElement.value = '';
+  //   this.burialPlaceRef.nativeElement.value = '';
+  // }
 
   onDropChild(event: CdkDragDrop<Person[]>) {
     const draggedChild: Person = event.item.data;
-
+    // Check if the dragged child is invalid
     if (this.isInvalidChild(draggedChild)) {
       this.invalidChild = true;
-      setTimeout(() => this.invalidChild = false, 2000);
-      return;
+      setTimeout(() => this.invalidChild = false, 20000); // Reset invalidChild after 2 seconds
     }
+
     this.children.push(draggedChild);
   }
 
@@ -142,9 +143,6 @@ export class PersonEditComponent implements OnInit{
    return false;
   }
 
-  onRemoveItem(index: number) {
-    this.children.splice(index, 1);
-  }
   
 
 }

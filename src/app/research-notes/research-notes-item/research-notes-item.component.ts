@@ -30,7 +30,6 @@ export class ResearchNotesItemComponent implements OnInit{
     console.log(`ResearchNotesItemComponent initialize for : ${this.note?.id}`)
     // If found, formats the name
     this.personName = person ? person.firstName + '' + person.lastName : 'Unknown Person';
-  }
-  
+  }  
 
 }

@@ -11,7 +11,8 @@ export class Person {
                   public deathDate: string,
                   public burialPlace: string,
                   public notes: string,
-                  public children: Person[] = []
+                  public children: string[],
+                  public _id?: string
 
     ) {}
 }

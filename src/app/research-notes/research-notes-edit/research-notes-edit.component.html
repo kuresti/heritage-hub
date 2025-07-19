@@ -1,6 +1,6 @@
 <div class="panel panel-default" style="background-color: #EABE7C;">
     <div class="panel-body">
-        <form #f="ngForm" (ngSubmit)="onSubmit(f)">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()" class="row">
             
                 <div class="col-sm-12 form-group">
                     <label for="subject">Subject</label>
@@ -8,49 +8,46 @@
                         type="text"
                         id="subject"
                         class="form-control"
-                        [(ngModel)]="note.subject"
+                        formControlName="subject"
                         name="subject"
-                        #subject="ngModel"
                         required>
                 </div>
                 <div
-                    *ngIf="!subject.valid && subject.touched"
+                    *ngIf="form.get('subject')?.invalid && form.get('subject')?.touched"
                     class="alert alert-danger mt-2">
                     The Subject is a required field.
                 </div>
+
                 <div class="col-sm-12 form-group">
                     <label for="text">Research Notes</label>
                     <textarea
                         id="text"
                         class="form-control"
-                        [(ngModel)]="note.text"
-                        name="text"
-                        #text="ngModel"
+                        formControlName="text"
                         rows="10"></textarea>
                 </div>
+
                 <div class="col-sm-12 form-group">
                     <label for="text">Note Author</label>
                     <input
                         type="text"
                         id="author"
                         class="form-control"                        
-                        name="author"
-                        [(ngModel)]="note.author"
-                        #author="ngModel"
+                        formControlName="author"                       
                         required>
                 </div>
                 <div
-                    *ngIf="!author.valid && author.touched"
+                    *ngIf="form.get('author')?.invalid && form.get('author')?.touched"
                     class="alert alert-danger mt-2">
                     Author is a required field.
                 </div>
            
             <div class="row">
                 <div class="col-xs-12">
-                    <button class="btn btn-success" 
-                            (click)="onSendNote()" 
-                            [disabled]="!f.valid"
-                            type="submit">Save</button>
+                    <button class="btn btn-success"
+                            type="submit"                             
+                            [disabled]="!form.valid">Save</button>
+                            
                     <button class="btn btn-danger" type="button" (click)="onClear()">Clear</button>
                     <button class="btn btn-primary" type="button" (click)="onCancel()">Cancel</button>
                 </div>

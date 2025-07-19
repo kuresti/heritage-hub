@@ -2,7 +2,7 @@
  * Imports
  ***********************************/
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { Document } from '../document.model';
 import { DocumentService } from '../document.service'
@@ -16,10 +16,12 @@ import { DocumentService } from '../document.service'
 export class DocumentDetailsComponent implements OnInit {
   // Properties
    document: Document;
+   id: string;
 
   // Methods
   constructor(private route: ActivatedRoute,
-              private documentService: DocumentService
+              private documentService: DocumentService,
+              private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -29,5 +31,8 @@ export class DocumentDetailsComponent implements OnInit {
         this.document = this.documentService.getDocument(id);
       });
   }
-  onDelete() {}
+  onDelete() {
+    this.documentService.deleteDocument(this.document);
+    this.router.navigate(['/documents']);
+  }
 }
