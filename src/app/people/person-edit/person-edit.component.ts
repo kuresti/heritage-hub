@@ -131,16 +131,18 @@ export class PersonEditComponent implements OnInit{
 
   isInvalidChild(child: Person) {
     if (!child) return true;
+    if (child.id === this.child?.id) return true;
+    return this.children.some((c) => c.id === child.id);
 
-    // If the child is the same as the person being edited
-    if (this.person && child.id === this.person.id) return true;
+  //   // If the child is the same as the person being edited
+  //   if (this.person && child.id === this.person.id) return true;
 
-    //If the child is already in the children list
-    if ( this.children.some(c => c.id === child.id)) {
-      return true;
-    }
-   // Otherwise, it's valid
-   return false;
+  //   //If the child is already in the children list
+  //   if ( this.children.some(c => c.id === child.id)) {
+  //     return true;
+  //   }
+  //  // Otherwise, it's valid
+  //  return false;
   }
 
   

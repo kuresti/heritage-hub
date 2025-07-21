@@ -33,7 +33,10 @@ export class PeopleService {
 
    private sortAndSend() {
     // Sorts people by name
-    this.people.sort((a, b) => a.lastName.localeCompare(b.lastName) || a.firstName.localeCompare(b.firstName));
+   this.people.sort((a, b) =>
+    (a.lastName || '').localeCompare(b.lastName || '') ||
+    (a.firstName || '').localeCompare(b.firstName || '')
+  );
     // Emits a copy of the array to subscribers
     this.peopleListChangedEvent.next(this.people.slice());
    }
