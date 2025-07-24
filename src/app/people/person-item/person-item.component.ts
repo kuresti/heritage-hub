@@ -13,7 +13,7 @@ import { Person } from '../person.model';
 })
 export class PersonItemComponent {
   // Properties
-  @Input() person: Person;
+  @Input() person!: Person;
  
 
   

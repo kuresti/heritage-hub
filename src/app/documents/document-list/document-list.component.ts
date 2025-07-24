@@ -17,22 +17,28 @@ import { DocumentService } from '../document.service';
 export class DocumentListComponent implements OnInit, OnDestroy {
   // Properties
   documents: Document[] = []
-  private subscription: Subscription;
+  subscription: Subscription;
 
   // Methods
   constructor(private documentService: DocumentService) {}
 
   ngOnInit(): void {
     this.documentService.getDocuments()
+    console.log('Initial documents', this.documents);
     this.subscription = this.documentService.documentListChangedEvent.subscribe(
       (documentList: Document[]) => {
-        this.documents = documentList;
+        this.documents = documentList.filter(d => d && typeof d === 'object' && 'id' in d);
+        console.log('Documents received in list:', this.documents);
       }
     );
   }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+  }
+
+  onAddDocument(document: Document) {
+    this.documents.push(document);
   }
 
 }

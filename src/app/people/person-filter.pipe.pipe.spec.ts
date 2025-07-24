@@ -1,4 +1,4 @@
-import { PersonFilterPipePipe } from './person-filter.pipe.pipe';
+import { PersonFilterPipePipe } from './person-filter.pipe';
 
 describe('PersonFilterPipePipe', () => {
   it('create an instance', () => {

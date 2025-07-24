@@ -22,7 +22,7 @@ import { ResearchNotesEditComponent } from './research-notes/research-notes-edit
 import { ResearchNotesItemComponent } from './research-notes/research-notes-item/research-notes-item.component';
 import { ResearchNotesDetailsComponent } from './research-notes/research-notes-details/research-notes-details.component';
 import { ResearchNotesComponent } from './research-notes/research-notes.component';
-import { PersonFilterPipePipe } from './people/person-filter.pipe.pipe';
+import { PersonFilterPipePipe } from './people/person-filter.pipe';
 
 
 

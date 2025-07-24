@@ -22,6 +22,7 @@ export class ResearchNotesService {
   notes: ResearchNote[] = [];
   noteListChangedEvent = new Subject<ResearchNote[]>();
   maxNoteId: number;
+  researchNote: ResearchNote;
 
   // Methods
   constructor(private http: HttpClient) {
@@ -40,13 +41,13 @@ export class ResearchNotesService {
     this.http.get<{message: string; researchNotes:ResearchNote[] }>('http://localhost:3000/research-notes')
       .subscribe({
         next: (response)  => {
+          this.notes = [];
           this.notes = response.researchNotes;
           this.maxNoteId = this.getMaxId();
           this.sortAndSend();
         }, error: (err) => console.error('Error fetching research-notes:', err)
       });
    }
-  
 
    getMaxId(): number {
     let maxId = 0;
@@ -83,13 +84,14 @@ export class ResearchNotesService {
      newNote.id = '';
 
      const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-
+     console.log('Sending newNote:', newNote);
      // Add to database
-     this.http.post<{ name: string, note: ResearchNote }>('http://localhost:3000/research-notes', newNote, { headers })
+     this.http.post<{ message: string, researchNote: ResearchNote }>('http://localhost:3000/research-notes', newNote, { headers })
        .subscribe(
           (responseData) => {
             //Add the new note to the database
-          this.notes.push(responseData.note);
+          this.notes.push(responseData.researchNote);
+          console.log("Note saved response:", responseData);
           this.sortAndSend();
           });
    }     

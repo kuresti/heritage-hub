@@ -8,6 +8,8 @@ import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 import { Person } from '../person.model';
 import { PeopleService } from '../people.service'
+import { ResearchNote } from '../../research-notes/research-note.model'
+import { ResearchNotesService } from '../../research-notes/research-notes.service'
 
 /***************************************
  * Component
@@ -23,16 +25,32 @@ import { PeopleService } from '../people.service'
  ***************************************/
 export class PersonEditComponent implements OnInit{
   // Properties  
-  person: Person = new Person('', '', '', '', '', '', '', '', '', '', '', []); // Edited version of Person
+  // person: Person = new Person({
+  //   id: '',
+  //   firstName: '',
+  //   middleName: '',
+  //   lastName: '',
+  //   birthDate: '',
+  //   birthPlace: '',
+  //   christeningDate: '',
+  //   marriageDate: '',
+  //   deathDate: '',
+  //   burialPlace: '',
+  //   notes: '',
+  //   children: []
+  // }); // Edited version of Person
+
+  person: Person = new Person({}); //Added change 7/22/25 3:00pm
   originalPerson: Person; // Original, unedited Person
   editMode: boolean = false; // Indicates existing Person to be edited, or a new Person being created
   id: string;
   children: Person[] = [];
   people: Person[] =[];
   invalidChild: boolean = false;
-  childDropListId = 'peronEditList';  // The childDropListId is used to identify the drop list for dragging and dropping children into the children array.
+  childDropListId = 'personEditList';  // The childDropListId is used to identify the drop list for dragging and dropping children into the children array.
   childrenDropListId = 'childrenPersonList'
   child: Person;
+  notes: ResearchNote[] = [];
   
    constructor(private peopleService: PeopleService,
               private router: Router,
@@ -48,46 +66,60 @@ export class PersonEditComponent implements OnInit{
         this.editMode = false;
         return;
       }
+     
       this.peopleService.getPeople();
 
-      // gets the original person
-      this.originalPerson = this.peopleService.getPerson(id);
+        this.originalPerson = this.peopleService.getPerson(id);
+        if (!this.originalPerson) return;
 
-      if (!this.originalPerson) {
-        // no person found with that id
-        return;
-      }
+        this.editMode = true
 
-      // Editing mode
-      this.editMode = true;
+        //this.person = JSON.parse(JSON.stringify(this.originalPerson)); -Commented out 7/23/25 11:50pm
+        //Added the following 7/23/25 11:51am
+        this.person = new Person(this.originalPerson);
 
-      // Makes a copy so the original isn't modified
-      this.person = JSON.parse(JSON.stringify(this.originalPerson));
+        //Refactored 7/22/25 3:02pm
+        if (Array.isArray(this.person.children) && this.person.children.length > 0) {
+          this.children = this.person.getPopulatedChildren();
+        }
 
-      if(this.person.children) {
-        this.children = this.person.children
-          .map(childId => this.peopleService.getPerson(childId))
-          .filter((child: Person | undefined): child is Person => !!child);
-      }
-      this.peopleService.getPeople();
-    });
-  }
+        // //Refactored 7/22/25 1:55pm
+        // if (Array.isArray(this.person.children)) {
+        //   this.children = this.person.children.map(child =>
+        //     typeof child === 'object' && child !== null ? child : this.people.find(p => p.id === child)
+        //   ).filter((c): c is Person => !!c);
+        // }
+
+        
+        //Replaced 7/22/2025
+        // if (Array.isArray(this.person.children) && this.person.children.length > 0) {
+        //   this.children = this.person.children
+        //   .map(childId => this.people.find(p => p.id === childId))
+        //   .filter((child): child is Person => !!child);
+        // }
+      });
+  
+}
 
    onSubmit(form: NgForm) {
     const value = form.value;
-    const newPerson = new Person(value.id, 
-                                 value.firstName, 
-                                 value.middleName, 
-                                 value.lastName, 
-                                 value.birthDate, 
-                                 value.birthPlace,
-                                 value.christeningDate, 
-                                 value.marriageDate, 
-                                 value.deathDate, 
-                                 value.burialPlace, 
-                                 value.notes,
-                                 this.children.map(child => child.id));
+    const newPerson = new Person({
+      id: value.id,
+      firstName: value.firstName,
+      middleName: value.middleName,
+      lastName: value.lastName,
+      birthDate: value.birthDate,
+      birthPlace: value.birthPlace,
+      christeningDate: value.christeningDate,
+      marriageDate: value.marriageDate,
+      deathDate: value.deathDate,
+      burialPlace: value.burialPlace,
+      notes: value.notes,
+      children: this.children.map(child => child._id)
+    });
+
     if (this.editMode) {
+      console.log('Saving person: ', JSON.stringify(newPerson));
       this.peopleService.updatePerson(this.originalPerson, newPerson)
     } else {
       this.peopleService.addPerson(newPerson)
@@ -124,6 +156,7 @@ export class PersonEditComponent implements OnInit{
     if (this.isInvalidChild(draggedChild)) {
       this.invalidChild = true;
       setTimeout(() => this.invalidChild = false, 20000); // Reset invalidChild after 2 seconds
+      return;
     }
 
     this.children.push(draggedChild);
@@ -145,6 +178,13 @@ export class PersonEditComponent implements OnInit{
   //  return false;
   }
 
+  loadNotes() {
+    // if (!this.person?.id) return;
+
+    // this.researchNotesService.getNotesByPersonId(this.person.id).subscribe(notes => {
+    //   this.notes = notes;
+    // }); // 7/23/2025 -Decided not to show notes inside of person-edit (would like to fix this to work later)
+  }
   
 
 }

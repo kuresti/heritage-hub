@@ -9,9 +9,7 @@ const documentSchema  = mongoose.Schema({
     type: { type: String, required: true },
     description: { type: String },
     docFile: { type: String, required: true },
-    personId: { type: String, required: true },
-    dateAdded: { type: String, required: true },
-    children: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Person' }]
+    dateAdded: { type: String, required: true }    
 });
 
 // Export the model so it can be used in other files

@@ -27,8 +27,8 @@ export class DocumentDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe(
       (params: Params) => {
-        const id = params['id']
-        this.document = this.documentService.getDocument(id);
+        this.id= params['id']
+        this.document = this.documentService.getDocument(this.id);
       });
   }
   onDelete() {

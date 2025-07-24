@@ -23,8 +23,8 @@ import { DocumentService } from '../document.service'
  **************************/
 export class DocumentEditComponent implements OnInit{
   // Properties
-    originalDocument: Document| null = null;
-    document: Document = new Document('', '', '', '', '', '', []);
+    originalDocument: Document;
+    document: Document = new Document('', '', '', '', '',);
     editMode: boolean = false;
     id: string;
     
@@ -42,6 +42,7 @@ export class DocumentEditComponent implements OnInit{
       if (!id) {
         // No ID, creating a new document
         this.editMode = false;
+        return;
       }
 
       // Try to get the original document
@@ -73,7 +74,7 @@ export class DocumentEditComponent implements OnInit{
 
     onSubmit(form: NgForm) {
       const value = form.value;
-      const newDocument = new Document(value.id, value.type, value.description, value.docFile, value.personId, value.dateAdded, value.this.children);
+      const newDocument = new Document(value.id, value.type, value.description, value.docFile, value.dateAdded)
       if (this.editMode) {
         this.documentService.updateDocument(this.originalDocument, newDocument)
       } else {

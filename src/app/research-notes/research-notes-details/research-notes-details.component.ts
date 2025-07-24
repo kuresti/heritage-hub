@@ -6,8 +6,7 @@ import { Component, OnInit } from '@angular/core';
 import { ResearchNote } from '../research-note.model'
 import { ResearchNotesService } from '../research-notes.service'
 import { ActivatedRoute, Router, Params} from '@angular/router';
-import { PeopleService } from '../../people/people.service';
-import { Person } from '../../people/person.model';
+
 
 /**************************
  * Component
@@ -24,18 +23,25 @@ import { Person } from '../../people/person.model';
  ***************************/
 export class ResearchNotesDetailsComponent implements OnInit {
   // Properties
-  note: ResearchNote
-  id: string
-  personName: string = 'Unknown Person'
+  note: ResearchNote;
+  id: string;
 
   // Methods
   constructor (private researchNotesService: ResearchNotesService,
                private router: Router,
-               private route: ActivatedRoute,
-               private peopleService: PeopleService
+               private route: ActivatedRoute               
   ) {}
 
+  //Refactored 7/23/2025 2:35pm
   ngOnInit(): void {
+    this.route.params.subscribe(
+      (params: Params) => {
+        this.id = params['id'];
+        this.note = this.researchNotesService.getResearchNote(this.id);
+      });
+  }
+
+  /*ngOnInit(): void {
    
     this.route.params.subscribe(params => {
       const id = params['id'];
@@ -45,10 +51,10 @@ export class ResearchNotesDetailsComponent implements OnInit {
     const person: Person | undefined = this.peopleService.getPerson(this.note.personId);
      // If found, formats the name
     this.personName = person ? person.firstName + '' + person.lastName : 'Unknown Person';
-  }
+  }*/
 
    onDelete() {
     this.researchNotesService.deleteNote(this.note)
-    this.router.navigate(['/researchNotes']);
+    this.router.navigate(['/research-notes']);
   }
 }

@@ -14,7 +14,7 @@ import { DocumentService } from  './document.service';
 })
 export class DocumentsComponent implements OnInit{
   // Properties  
-  selectedDocument: Document | null = null;
+  selectedDocument: Document;
   // Methods
   constructor(private documentService: DocumentService) {}
 

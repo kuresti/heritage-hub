@@ -3,10 +3,10 @@
         <form #f="ngForm" (ngSubmit)="onSubmit(f)" id="person-edit">
             <div class="row">
                 <div class="col-sm-12 form-group">
-                    <label for="first-name">First Name:</label>
+                    <label for="firstName">First Name:</label>
                     <input
                         type="text"
-                        id="first-name"
+                        id="firstName"
                         name="firstName"
                         [(ngModel)]="person.firstName"
                         #firstName="ngModel"
@@ -15,10 +15,10 @@
                         max="120">
                 </div>
                 <div class="col-sm-12 form-group">
-                    <label for="middle-name">Middle Name:</label>
+                    <label for="middleName">Middle Name:</label>
                     <input
                         type="text"
-                        id="middle-name"
+                        id="middleName"
                         name="middleName"
                         [(ngModel)]="person.middleName"
                         #middleName="ngModel"
@@ -27,10 +27,10 @@
                         max="120">
                 </div>
                 <div class="col-sm-12 form-gorup">
-                    <label for="last-name">Last Name:</label>
+                    <label for="lastName">Last Name:</label>
                     <input
                         type="text"
-                        id="last-name"
+                        id="lastName"
                         name="lastName"
                         [(ngModel)]="person.lastName"
                         #lastName="ngModel"
@@ -48,10 +48,10 @@
 
                 <div class="col-sm-12 form-group">
                    
-                    <label for="birth-date">Date of Birth:</label>
+                    <label for="birthDate">Date of Birth:</label>
                     <input 
                         type="text"
-                        id="birth-date"
+                        id="birthDate"
                         name="birthDate"
                         [(ngModel)]="person.birthDate"
                         #birthDate="ngModel"
@@ -60,10 +60,10 @@
                         max="120">
                 </div>
                 <div class="col-sm-12 form-group">
-                    <label for="birth-place">Place of Birth: </label>
+                    <label for="birthPlace">Place of Birth: </label>
                     <input 
                         type="text"
-                        id="birth-place"
+                        id="birthPlace"
                         name="birthPlace"
                         [(ngModel)]="person.birthPlace"
                         #birthPlace="ngModel"
@@ -72,10 +72,10 @@
                         max="120">
                 </div>
                 <div class="col-sm-12 form-group">
-                    <label for="christening-date">Christening Date: </label>
+                    <label for="christeningDate">Christening Date: </label>
                     <input 
                         type="text"
-                        id="christening-date"
+                        id="christeningDate"
                         name="christeningDate"
                         [(ngModel)]="person.christeningDate"
                         #christeningDate="ngModel"
@@ -84,10 +84,10 @@
                         max="120">
                 </div>
                 <div class="col-sm-12 form-group">
-                    <label for="marriage-date">Date of Marriage: </label>
+                    <label for="marriageDate">Date of Marriage: </label>
                     <input 
                         type="text"
-                        id="marriage-date"
+                        id="marriageDate"
                         name="marriageDate"
                         [(ngModel)]="person.marriageDate"
                         #marriageDate="ngModel"
@@ -96,10 +96,10 @@
                         max="120">
                 </div>
                 <div class="col-sm-12 form-group">
-                    <label for="death-date">Date of Death: </label>
+                    <label for="deathDate">Date of Death: </label>
                     <input 
                         type="text"
-                        id="death-date"
+                        id="deathDate"
                         name="deathDate"
                         [(ngModel)]="person.deathDate"
                         #deathDate="ngModel"
@@ -108,10 +108,10 @@
                         max="120">
                 </div>
                 <div class="col-sm-12 form-group">
-                    <label for="burial-place">Burial Place: </label>
+                    <label for="burialPlace">Burial Place: </label>
                     <input 
                         type="text"
-                        id="burial-place"
+                        id="burialPlace"
                         name="burialPlace"
                         [(ngModel)]="person.burialPlace"
                         #burialPlace="ngModel"
@@ -122,7 +122,13 @@
                     
                     <div class="form-group">
                         <a class="btn btn-success btn-sm" [routerLink]="['/research-notes/new']" style=" margin-top: 5px; margin-left: 15px;">Add Note</a>
+                        <!--<a class="btn btn-info btn-sm" (click)="loadNotes()">Show Notes</a>-->
                     </div>
+                   <!-- <div class="form-group">
+                        <ul *ngIf="notes?.length">
+                            <strong>{{ note.subject }}:</strong> {{ note.text }}
+                        </ul>
+                    </div>-->
                     <div class="form-group">
                         <label for="childrenList">Children: </label>
 

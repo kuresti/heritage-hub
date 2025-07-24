@@ -3,7 +3,7 @@
  ********************************/
 import { Pipe, PipeTransform } from '@angular/core';
 
-import { Person } from '../people/person.model';
+import { Person } from './person.model';
 
 /********************************
  * Decorations

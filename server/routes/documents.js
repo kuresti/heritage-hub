@@ -9,6 +9,7 @@ const Document = require('../models/document.js');
 /*************************
  * GET all documents
  *************************/
+console.log('GET /documents triggered');
 router.get('/', async (req, res, next) => {
     try {
         const documents = await Document.find().exec();
@@ -29,16 +30,21 @@ router.get('/', async (req, res, next) => {
  ***************************/
 router.post('/', async (req, res, next) => {
     try{
-        const maxDocumentId = sequenceGenerator.nextId(documents);
+        const maxDocumentId = sequenceGenerator.nextId('documents');
+        console.log('Generated Document ID', maxDocumentId);
+
+        if (!maxDocumentId) {
+            return res.status(500).json({
+                message: 'Failed to generate note ID'
+            });
+        }
 
         const document = new Document({
-            id: maxDocumentId,
+            id: maxDocumentId.toString(),
             type: req.body.type,
             description: req.body.description,
-            docFile: req.body.docFile,
-            personId: req.body.personId,
-            dateAdded: req.body.dateAdded,
-            children: req.body.children || []
+            docFile: req.body.docFile,           
+            dateAdded: req.body.dateAdded           
         });
 
         const createdDocument = await document.save();
@@ -47,6 +53,7 @@ router.post('/', async (req, res, next) => {
             document: createdDocument
         });
     } catch (err) {
+        console.log('Error saving document:', err);
         res.status(500).json({
             message: 'An error occurred while adding the document.',
             error: err
@@ -59,13 +66,30 @@ router.post('/', async (req, res, next) => {
  ***************************/
 router.get('/:id', async (req, res, next) => {
     try {
-        const documentId = req.params.id;
-        const document = await Document.findOne({ id: documentId }).exec();
+            const { id } = req.params;
+        // const documentId = req.params.id;
+        // const document = await Document.findOne({ id: documentId }).exec();
+
+        // if (!document) {
+        //     return res.status(404).json({
+        //         message: 'Document not found',
+        //         error: { message: 'No document found with the provided ID.' }
+        //     });
+        // }
+
+        //Check if id is a valid MongoDB ObjectId
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                message: 'Invalid ID format',
+                error: { id }
+            })
+        }
+        
+        const document = await Document.findById(id)
 
         if (!document) {
-            return res.status(404).json({
-                message: 'Document not found',
-                error: { message: 'No document found with the provided ID.' }
+            return res. status(404).json({
+                message: 'Document not found'
             });
         }
 
@@ -101,12 +125,11 @@ router.put('/:id', async (req, res, next) => {
         document.type = req.body.type;
         document.description = req.body.description;
         document.docFile = req.body.docFile;
-        document.personId = req.body.personId;
         document.dateAdded = req.body.dateAdded;
-        document.children = req.body.children || [];
+        
 
        // await Document.updateOne({ id: req.params.id }, document);
-       const updatedDocument = await document.save();
+        await document.save();
 
         // Return success response
         res.status(200).json({
@@ -125,19 +148,26 @@ router.put('/:id', async (req, res, next) => {
  * DELETE a document
  *****************************/
 router.delete('/:id', async (req, res, next) => {
+    const id = req.params.id.toString();
+    console.log('Attempting to delete document with id:', id);
+
     try {
           // Check if the document exists
-          const document = await Document.findOne({ id: req.params.id });
+          const document = await Document.findOne({ id: id });
 
           if (!document) {
-            return res. status(404).json({
-                message: 'Document not fount',
-                error: { message: 'Document not fount' }
-            });
+            console.warn('Document not found in DB for id:', id);
+            // return res. status(404).json({
+            //     message: 'Document not fount',
+            //     error: { message: 'Document not fount' }
+            // });
           }
 
-          // Delete the document
-          await Document.deleteOne({ id: req.params.id });
+          const result = await Document.deleteOne({ id: id });
+          console.log('Delete result:', result);
+
+        //   // Delete the document
+        //   await Document.deleteOne({ id: req.params.id });
 
           // Return success response
           res.status(200).json({
@@ -145,6 +175,7 @@ router.delete('/:id', async (req, res, next) => {
             document: document
           });
          } catch (err) {
+            console.log('OUTER ERROR:', err.stack || err);
             res. status(500).json({
                 message: 'An error occurred while deleting the document.',
                 error: err

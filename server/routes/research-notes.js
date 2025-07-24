@@ -31,13 +31,22 @@ router.get('/', async (req, res, next) => {
  *************************************/
 router.post('/', async (req, res, next) => {
     try {
-        const maxNoteId = sequenceGenerator.nextId('notes');
+        const maxNoteId = await sequenceGenerator.nextId('notes');
+        console.log('Generated note ID:', maxNoteId);
+
+
+        if (!maxNoteId) {
+            return res.status(500).json({
+                message: 'Failed to generate note ID'
+            });
+        }
+
 
         const researchNote = new ResearchNote({
-            id: maxNoteId,
+            id: maxNoteId.toString(),
             subject: req.body.subject,
             text: req.body.text,
-            personId: req.body.personId,
+            personName: req.body.personName,
             author: req.body.author
         });
 
@@ -48,6 +57,7 @@ router.post('/', async (req, res, next) => {
             researchNote: createdResearchNote
         });
     } catch (err) {
+        console.log('Error saving research note:', err);
         res.status(500).json({
             message: 'An error occurred while adding the research note.',
             error: err
@@ -60,7 +70,17 @@ router.post('/', async (req, res, next) => {
  ************************************/
 router.get('/:id', async (req, res, next) => {
     try {
-        const researchNote = await ResearchNote.findById(req.params.id).exec();
+        const { id } = req.params;
+
+        //Check if id is a valid MongoDB ObjectId
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({
+                message: 'Invalid ID format',
+                error: { id }
+            })
+        }
+
+        const researchNote = await ResearchNote.findById(id)
 
         if (!researchNote) {
             return res. status(404).json({
@@ -86,7 +106,7 @@ router.get('/:id', async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
     try {
         // check if the research note exists
-        const researchNote = await ResearchNote.findById(req.params.id).exec();
+        const researchNote = await ResearchNote.findOne({ id: req.params.id });
 
         if (!researchNote) {
             return res.status(404).json({
@@ -98,10 +118,11 @@ router.put('/:id', async (req, res, next) => {
         // Update the research note
         researchNote.subject = req.body.subject;
         researchNote.text = req.body.text;
-        researchNote.personId = req.body.personId;
+        researchNote.personName = req.body.personName;
         researchNote.author = req.body.author;
 
-        await researchNote.updateOne({ id: req.params.id }, researchNote);
+        //await researchNote.updateOne({ id: req.params.id }, researchNote);
+        await researchNote.save();
 
         // return success response
         res.status(200).json({
@@ -118,20 +139,54 @@ router.put('/:id', async (req, res, next) => {
 /*********************************
  * DELETE an existing research note
  *********************************/
-router.delete('/:id', async (req, res, next) => {
-    try {
-        // Check if the research note exists
-        const researchNote = await ResearchNote.findById(req.params.id).exec();
+//Refactored 7/23/25 to fix mixed ids
+router.delete('/:id', async (req, res) => {
+    const id = req.params.id.toString(); //ensure string
+    console.log('Attempting to delete research note with id:', id);
 
-        if (!researchNote) {
+    try {
+        const note = await ResearchNote.findOne({ id: id });
+
+        if (!note) {
+            console.warn('Note not found in DB for id:', id);
+        }
+
+        const result = await ResearchNote.deleteOne({ id: id });
+        console.log('Delete result:', result);
+
+        res.status(200).json({ message: 'Deleted successfully' });
+    } catch (err) {
+        console.log('OUTER ERROR:', err.stack || err);
+        res.status(500).json({ message: 'Server error', error: err.message });
+    }
+});
+/*router.delete('/:id', async (req, res, next) => {
+    const { id } = req.params;
+        console.log('Attempting to delete research note with id:', id);
+    
+    try {
+            let note;
+
+        try{
+        // Check if the research note exists
+           note = await ResearchNote.findById({id: id.toString() });
+           console.log('Note found:', note);
+        } catch (err) {
+            console.error('FIND ERROR:', err);
+            return res.status(500).json({ message: 'DB find error', error: err.message });
+        }
+
+        if (!note) {
+            console.warn('Note not found in DB for id:', id)
             return res.status(404).json({
                 message: 'Research note not found',
-                error: { researchNote: 'Research note not found' }
+                error: { id }
             });
         }
 
         //Delete the research note
-        await ResearchNote.deleteOne({ id: req.params.id });
+        const deleteResult = await ResearchNote.deleteOne({ _id: id });
+        console.log('Delete result: ', deleteResult);
 
         // Return success response
         res.status(200).json({
@@ -140,10 +195,10 @@ router.delete('/:id', async (req, res, next) => {
     } catch (err) {
         res.status(500).json({
             message: 'An error occurred while deleting the research note.',
-            error: err
+            error: err.message
         });
     }
-});
+});*/
 
 /**********************************
  * Export the router

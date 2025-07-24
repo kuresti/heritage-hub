@@ -8,7 +8,7 @@ const researchNoteSchema = mongoose.Schema({
     id: { type: String, required: true },
     subject: { type: String, required: true },
     text: { type: String, required: true },
-    personId: { type: mongoose.Schema.Types.ObjectId, ref: 'Person' }, 
+    personName: { type: String, required: true}, 
     author: { type: String, required: true }
 });
 

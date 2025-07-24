@@ -4,20 +4,43 @@
             <div class="panel-heading">
                 <div class="row pad-left-right">
                     <span class="title pull-left">Research Notes</span>
-                    <div class="pull-right pad-left-right">
-                        <a class="btn btn-success btn-sm" [routerLink]="['/research-notes/new']" style="margin-right: 5px;">Add Note</a>
                 </div>
-            </div>
+                <div class="row">
+                    <div class="input-group pull-left pad-left pad-left-right col-sm-8">
+                        <input type="text"
+                               class="form-control"
+                               placeholder="Enter a person name"
+                               #searchBox
+                               (keyup)="search(searchBox.value)">
+                        <div class="glyphicon glyphicon-search input-group-addon"
+                             (click)="search(searchBox.value)"></div>
+                    </div>
+                </div>
+                <div class="pull-right pad-left-right">
+                    <a class="btn btn-success btn-sm" 
+                       [routerLink]="['/research-notes/new']"
+                       style="margin-right: 5px; margin-top: 5px; margin-bottom: 5px;">Add Note</a>
+                </div>
             <div class="panel-body">
                 <div class="row">
                     <div class="col-xs-12">
-                        <div *ngFor="let note of notes">
+                       <!--Refactored 7/23/25 8:40am--> 
+                       <!--<ng-container *ngIf="notes?.length">
+                        <ng-container *ngFor="let note of notes; let i = index">
+                            <heritage-hub-research-notes-item
+                                *ngIf="note"
+                                [note]="note"
+                                [index]="i">                                
+                            </heritage-hub-research-notes-item>
+                        </ng-container>
+                       </ng-container>-->
+                       
                         <heritage-hub-research-notes-item 
                                         *ngFor="let note of notes; let i = index"
                                         [note]="note"
                                         [index]="i">
                                     </heritage-hub-research-notes-item>
-                        </div>
+                      
                     </div>
                 </div>
             </div>

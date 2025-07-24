@@ -5,20 +5,21 @@
                 <div class="col-sm-12 form-goup">
                     <label for="type">Document Type</label>
                     <input type="text"
-                           id="doc-type"
-                           name="doc-type"
+                           id="type"
+                           name="type"
                            required
                            [(ngModel)]="document.type"
                            #type="ngModel"
                            class="form-control"
                            size="120"
-                           max="120">
-                </div>
-                  <div
+                           max="120"> 
+                    <div
                     *ngIf="!type.valid && type.touched"
                     class="alert alert-danger mt-2">
                     Document type is a required field.
-                </div> 
+                    </div>                           
+                </div>
+                 
                 <div class="col-sm-12 form-group">
                     <label for="description">Description</label>
                     <input
@@ -43,12 +44,13 @@
                         required
                         max="120"
                         size="120">
-                </div>
-                  <div
+                <div
                     *ngIf="!docFile.valid && docFile.touched"
                     class="alert alert-danger mt-2">
                     The document file url is a required field.
                 </div> 
+                </div>
+                  
                 <div class="col-sm-12 form-group">
                     <label for="date-added">Date Added</label>
                     <input
@@ -61,12 +63,13 @@
                         required
                         max="255"
                         size="120">
-                </div>
-                  <div
+                 <div
                     *ngIf="!dateAdded.valid && dateAdded.touched"
                     class="alert alert-danger mt-2">
                     Date Added is a required field.
                 </div> 
+                </div>
+                  
             </div>
             <div class="row">
                 <div class="col-xs-12 btn-toolbar">

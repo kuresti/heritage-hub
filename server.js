@@ -16,6 +16,9 @@ const peopleRoutes = require('./server/routes/people');
 const researchNotesRoutes = require('./server/routes/research-notes');
 const documentsRoutes = require('./server/routes/documents');
 
+//Import sequence generator (Added 7/23/25 10:31a)
+const sequenceGenerator = require('./server/routes/sequenceGenerator');
+
 
 // Establish a connection to MongoDB
 mongoose.connect('mongodb://localhost:27017/heritage-hub', { useNewUrlParser: true })
@@ -30,7 +33,7 @@ mongoose.connect('mongodb://localhost:27017/heritage-hub', { useNewUrlParser: tr
 var app = express();
 
 
-//Middlware
+//Middleware
 // Tell express to use the following parsers for POST data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -42,24 +45,20 @@ app.use(cookieParser());
 app.use(logger('dev'));
 
 // Enable CORS (Cross-Origin Resource Sharing)
-app.use(cors({
-    origin: '*', // Allow requests from this origin
-    methods: 'GET, POST, PATCH, PUT, DELETE, OPTIONS', // Allow these HTTP methods
-    allowedHeaders: 'Content-Type, Authorization' // Allow these headers
-}))
-// Add support for CORS
-// app.use((req, res, next) => {
-//     res.setHeader('Access-Control-Allow-Origin', '*');
-//     res.setHeader(
-//         'Access-Control-Allow-Headers',
-//         'Origin, X-Requested-With, Content-Type, Accept'
-//     );
-//     res.setHeader(
-//         'Access-Control-Allow-Methods',
-//         'GET, POST, PATCH, PUT, DELETE, OPTIONS'
-//     );
-//     next();
-// });
+app.use(cors());
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+    );
+    res.header(
+        'Access-Control-Allow-Methods',
+        'GET, POST, PATCH, PUT, DELETE, OPTIONS'
+    );
+    next();
+});
+   
 
 // ...ADD YOUR CODE TO MAP YOUR URL's TO ROUTING FILES HERE ...
 app.use('/people', peopleRoutes);
@@ -92,7 +91,14 @@ app.set('port', port);
 // Create HTTP server.
 const server = http.createServer(app);
 
-// Tell the server to start listening on the provided port
-server.listen(port, function() {
-    console.log('API running on localhost: ' + port)
-});
+// Tell the server to start listening on the provided port   
+      
+  server.listen(port, () => {
+  console.log('API running on localhost: ' + port);
+  });
+    
+
+
+// server.listen(port, function() {
+//     console.log('API running on localhost: ' + port)
+// });

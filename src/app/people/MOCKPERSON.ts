@@ -1,6 +1,7 @@
 import { Person } from './person.model';
 
-export const MOCKPERSON: Person[] = [
+// Use 'any' type for mock data to avoid missing method errors
+export const MOCKPERSON: any[] = [
     // individual people
     // index 0
     {

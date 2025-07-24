@@ -32,9 +32,11 @@ export class PersonListComponent implements OnInit, OnDestroy{
    
 
   ngOnInit() {
+    console.log('Calling getPeople...');
     this.peopleService.getPeople();
     this.subscription = this.peopleService.peopleListChangedEvent.subscribe(
       (personList: Person[]) => {
+        console.log('Received personList:', personList)
         this.people = personList;
       });   
   }

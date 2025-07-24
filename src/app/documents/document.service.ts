@@ -11,16 +11,21 @@ import { Document } from './document.model';
 @Injectable({
   providedIn: 'root'
 })
+
+/*****************************
+ * Class
+ *****************************/
 export class DocumentService {
   // Properties
   documents: Document[] = [];
   documentListChangedEvent = new Subject<Document[]>();
-  private maxDocumentId: number;
+  maxDocumentId: number;
+  document: Document;
 
   // Methods
   constructor(private http: HttpClient) { 
     
-    this.maxDocumentId = this.getMaxId();
+    //this.maxDocumentId = this.getMaxId();
   }
 
   sortAndSend() {
@@ -31,7 +36,7 @@ export class DocumentService {
   }
 
   getDocuments() {
-    this.http.get<{ message: string; documents: Document[] }>('http://localhost:3000/documents')
+    this.http.get<{ message: string; documents:Document[] }>('http://localhost:3000/documents')
       .subscribe({
         next: (response) => {
           this.documents = response.documents;
@@ -44,7 +49,7 @@ export class DocumentService {
       });
   }
 
-  getDocument(id: string): Document | null {
+  getDocument(id: string) {
     for (let document of this.documents) {
       if (document.id === id) {
         return document;
@@ -58,7 +63,7 @@ export class DocumentService {
       return;
     }
 
-    const pos = this.documents.indexOf(document);
+    const pos = this.documents.findIndex(d => d.id === document.id);
     if (pos < 0) {
       return;
     }
@@ -80,14 +85,16 @@ export class DocumentService {
     newDocument.id = '';
 
     const headers = new HttpHeaders({ 'Content-Type': 'application/json'});
+    console.log('Sending newDocument:', newDocument);
     // Add the new document to the database
     this.http.post<{name: string, document: Document }>('http://localhost:3000/documents', newDocument, { headers })
       .subscribe({
         next: (responseData) => {
           // set the id of the new document
-          newDocument.id = responseData.document.id;
+          //newDocument.id = responseData.document.id;
           // Add the new document to the documents array
           this.documents.push(newDocument);
+          console.log('Document saved response:', responseData);
           this.sortAndSend();
         }
   });
@@ -118,6 +125,9 @@ export class DocumentService {
 
   getMaxId(): number {
     let maxId = 0;
+    if (!Array.isArray(this.documents)) {
+      return 0;
+    }
 
     for (let document of this.documents) {
       const currentId = parseInt(document.id);
